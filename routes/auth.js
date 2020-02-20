@@ -1,6 +1,7 @@
+const config = require("config");
 const _ = require("lodash");
-const jwt = require('jsonwebtoken')
-const Joi = require("joi")
+const jwt = require("jsonwebtoken");
+const Joi = require("joi");
 const bcrypt = require("bcrypt");
 const { User } = require("../models/users");
 const mongoose = require("mongoose");
@@ -15,11 +16,11 @@ router.post("/", async (req, res) => {
   if (!user) return res.status(400).send("Invalid email or password");
 
   const validPassword = await bcrypt.compare(req.body.password, user.password);
-  if(!validPassword) return res.status(400).send("Invalid email or password");
+  if (!validPassword) return res.status(400).send("Invalid email or password");
 
-  const token = jwt.sign({_id: user._id}, "jwtPrivateKey")
+  const token = jwt.sign({ _id: user._id }, config.get("jwtPrivateKey"));
 
-  res.send(token)
+  res.send(token);
 });
 
 function validate(req) {
