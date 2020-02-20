@@ -18,10 +18,10 @@ Project is created with:
 1. Clone it
 2. To run this project:
 
-`
+```
 npm install
-`
+```
 
-`
+```
 node index.js
-`
+```
