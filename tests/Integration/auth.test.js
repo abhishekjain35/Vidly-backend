@@ -1,12 +1,14 @@
 const request = require("supertest");
 const { User } = require("../../models/users");
+const { Genre } = require("../../models/genre");
 
 describe("auth middleware", () => {
   beforeEach(() => {
-    server = require("../../index");
+    server = require("../../index"); 
   });
 
   afterEach(async () => {
+    await Genre.remove({})
     server.close();
   });
 
@@ -33,5 +35,10 @@ describe("auth middleware", () => {
     token = "a";
     const res = await exec();
     expect(res.status).toBe(400);
+  });
+
+  it("should return 200 if token is valid", async () => {
+    const res = await exec();
+    expect(res.status).toBe(200);
   });
 });
