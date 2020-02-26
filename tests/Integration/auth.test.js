@@ -28,4 +28,10 @@ describe("auth middleware", () => {
     const res = await exec();
     expect(res.status).toBe(401);
   });
+
+  it("should return 400 if token is invalid", async () => {
+    token = "a";
+    const res = await exec();
+    expect(res.status).toBe(400);
+  });
 });
