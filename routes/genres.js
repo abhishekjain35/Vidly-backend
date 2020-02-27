@@ -39,7 +39,7 @@ router.put("/:id", async (req, res) => {
   res.send(genre);
 });
 
-router.delete("/:id", [auth, admin], async (req, res) => {
+router.delete("/:id", [auth, admin, validateObjectId], async (req, res) => {
   const genre = await Genre.findByIdAndRemove(req.params.id);
 
   if (!genre)

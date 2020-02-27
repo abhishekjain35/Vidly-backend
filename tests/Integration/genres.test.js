@@ -1,6 +1,7 @@
 const request = require("supertest");
 const { Genre } = require("../../models/genre");
 const { User } = require("../../models/users");
+const mongoose = require("mongoose");
 
 let server;
 
@@ -93,4 +94,35 @@ describe("/api/genres", () => {
       expect(res.body).toHaveProperty("name", "genre1");
     });
   });
+
+  describe('DELETE /:id', () => {
+    let token; 
+    let genre; 
+    let id; 
+
+    const exec = async () => {
+      return await request(server)
+        .delete('/api/genres/' + id)
+        .set('x-auth-token', token)
+        .send();
+    }
+
+    beforeEach(async () => {
+      // Before each test we need to create a genre and 
+      // put it in the database.      
+      genre = new Genre({ name: 'genre1' });
+      await genre.save();
+      
+      id = genre._id; 
+      token = new User({ isAdmin: true }).generateAuthToken();     
+    })
+
+    it('should return 401 if client is not logged in', async () => {
+      token = ''; 
+
+      const res = await exec();
+
+      expect(res.status).toBe(401);
+    });
+  });  
 });
