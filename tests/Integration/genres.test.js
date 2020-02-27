@@ -119,6 +119,14 @@ describe("/api/genres", () => {
       newName = "updatedName";
     });
 
+    it("should return 401 if client is not logged in", async () => {
+      token = "";
+
+      const res = await exec();
+
+      expect(res.status).toBe(401);
+    });
+
     it("should return 400 if genre is less than 5 characters", async () => {
       newName = "1234";
 
@@ -180,8 +188,6 @@ describe("/api/genres", () => {
     };
 
     beforeEach(async () => {
-      // Before each test we need to create a genre and
-      // put it in the database.
       genre = new Genre({ name: "genre1" });
       await genre.save();
 
