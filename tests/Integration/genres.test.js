@@ -124,5 +124,28 @@ describe("/api/genres", () => {
 
       expect(res.status).toBe(401);
     });
+
+    it('should return 403 if the user is not an admin', async () => {
+      token = new User({ isAdmin: false }).generateAuthToken(); 
+
+      const res = await exec();
+
+      expect(res.status).toBe(403);
+    });
+
+    it('should return 404 if id is invalid', async () => {
+      id = 1; 
+      
+      const res = await exec();
+      expect(res.status).toBe(404);
+    });
+
+    it('should return 404 if no genre with the given id was found', async () => {
+      id = mongoose.Types.ObjectId();
+
+      const res = await exec();
+
+      expect(res.status).toBe(404);
+    });
   });  
 });
