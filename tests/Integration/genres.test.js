@@ -134,7 +134,7 @@ describe("/api/genres", () => {
 
       expect(res.status).toBe(400);
     });
-    
+
     it("should return 404 if id is invalid", async () => {
       id = 1;
 
@@ -149,6 +149,21 @@ describe("/api/genres", () => {
       const res = await exec();
 
       expect(res.status).toBe(404);
+    });
+
+    it("should update the genre if input is valid", async () => {
+      await exec();
+
+      const updatedGenre = await Genre.findById(genre._id);
+
+      expect(updatedGenre.name).toBe(newName);
+    });
+
+    it("should return the updated genre if it is valid", async () => {
+      const res = await exec();
+
+      expect(res.body).toHaveProperty("_id");
+      expect(res.body).toHaveProperty("name", newName);
     });
   });
 
